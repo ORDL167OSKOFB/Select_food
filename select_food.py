@@ -36,7 +36,6 @@ def create_connection():
 connection = create_connection()
 
 
-
 @app.route('/return_foods')
 def select_data():
     connection = create_connection()
@@ -66,7 +65,7 @@ def test_route():
 
 print(test_route())
 select_data()
-if __name__ == '__main__': 
-    app.run(host='0.0.0.0', port=5002, debug=True)
+if __name__ == "__main__":
+    app.run()
 
 # testingh
