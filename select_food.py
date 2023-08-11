@@ -5,8 +5,6 @@ from flask import request, jsonify, make_response
 
 # import jsonify
 import pyodbc
-from flask_cors import CORS
-
 app = Flask(__name__)
 
 
@@ -39,7 +37,7 @@ connection = create_connection()
 
 
 
-@app.route('/return_foods', methods=['GET'])
+@app.route('/return_foods')
 def select_data():
     connection = create_connection()
     cursor = connection.cursor()
@@ -57,13 +55,17 @@ def select_data():
         })
 
     connection.close()
+    
+    print(result)
 
-    return jsonify(result)
+    # return jsonify(result)
 
 @app.route('/test', methods=['GET'])
 def test_route():
     return "Test successful!"
 
+print(test_route())
+select_data()
 if __name__ == '__main__': 
     app.run(host='0.0.0.0', port=5002, debug=True)
 
