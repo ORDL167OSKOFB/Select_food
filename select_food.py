@@ -30,8 +30,13 @@ def select_data():
 
     connection.commit()
     connection.close()
+     response = make_response(jsonify(result))
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
     
-    return jsonify(result)
+    
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
