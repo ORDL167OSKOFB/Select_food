@@ -10,13 +10,35 @@ CORS(app, resources={r"/*": {"origins": "https://40268037flaskfrontend.azurewebs
 
 
 
+
 def get_connection_string():
-    # ... [rest of the function remains the same]
+    # Obtainn string from azure environment before local
+    azure_db = os.environ.get('DB_CONNECTION_STRING')
+    
+    if azure_db:
+        return azure_db
+    
+    # Local db string
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+    
+    server = config['DATABASE']['server']
+    db = config['DATABASE']['db']
+    username = config['DATABASE']['user']
+    password = config['DATABASE']['password']
+    driver = config['DATABASE']['driver']
+    port = config['DATABASE']['port']
+    
+    return f'DRIVER={driver};SERVER={server};PORT={port};DATABASE={db};UID={username};PWD={password}'
 
 def create_connection():
     return pyodbc.connect(get_connection_string())
+ 
+connection = create_connection()
 
-@app.route('/return_foods', methods=['GET', 'OPTIONS'])
+
+
+@app.route('/return_foods', methods=['GET'])
 def select_data():
     connection = create_connection()
     cursor = connection.cursor()
@@ -26,20 +48,17 @@ def select_data():
 
     result = []
     for row in rows:
-       result.append({'food_name': row[1], 'quantity': row[2], 'expiry_date': row[3], 'date_added': row[4]})
+        result.append({
+            'food_name': row[1],
+            'quantity': row[2],
+            'expiry_date': row[3],
+            'date_added': row[4]
+        })
 
-    connection.commit()
     connection.close()
-    if (request.method == 'OPTIONS'):
-        response = make_response(jsonify(result))
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-    
 
-    return response
+    return jsonify(result)
 
-        
 if __name__ == '__main__': 
     app.run(debug=True)
 
