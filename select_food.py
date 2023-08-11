@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import request, jsonify
+from flask import request, jsonify, make_response
 
 # import jsonify
 import pyodbc
@@ -30,7 +30,7 @@ def select_data():
 
     connection.commit()
     connection.close()
-     response = make_response(jsonify(result))
+    response = make_response(jsonify(result))
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE'
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
@@ -38,8 +38,6 @@ def select_data():
     
     return response
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
         
 if __name__ == '__main__': 
     app.run(debug=True)
