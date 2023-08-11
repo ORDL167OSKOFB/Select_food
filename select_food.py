@@ -58,7 +58,7 @@ def select_data():
     
     print(result)
 
-    # return jsonify(result)
+    return jsonify(result)
 
 @app.route('/test', methods=['GET'])
 def test_route():
