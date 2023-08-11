@@ -1,3 +1,5 @@
+import os
+import configparser
 from flask import Flask
 from flask import request, jsonify, make_response
 
@@ -57,6 +59,10 @@ def select_data():
     connection.close()
 
     return jsonify(result)
+
+@app.route('/test', methods=['GET'])
+def test_route():
+    return "Test successful!"
 
 if __name__ == '__main__': 
     app.run(debug=True)
