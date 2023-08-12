@@ -3,7 +3,6 @@ import configparser
 from flask import Flask
 from flask import request, jsonify, make_response
 
-# import jsonify
 import pyodbc
 app = Flask(__name__)
 
@@ -15,6 +14,7 @@ def get_connection_string():
     azure_db = os.environ.get('DB_CONNECTION_STRING')
     
     if azure_db:
+        print("azure db registered")
         return azure_db
     
     # Local db string
@@ -57,20 +57,20 @@ def select_data():
     
     print(result)
 
-    response = make_response(jsonify(result))
-    response.headers['x-content-type-options'] = 'nosniff'
+    # response = make_response(jsonify(result))
+    # response.headers['x-content-type-options'] = 'nosniff'
     
-    return response
+    return result
 
-@app.route('/return_foods_python')
-def select_data2():
-    # Here, I'm assuming another service provides the food data.
-    response = requests.get("https:/40268037selectfood.azurewebsites.net/return_foods")
+# @app.route('/return_foods_python')
+# def select_data2():
+#     # Here, I'm assuming another service provides the food data.
+#     response = requests.get("https:/40268037selectfood.azurewebsites.net/return_foods")
     
-    if response.status_code == 200:
-        return jsonify(response.json())
-    else:
-        return "error"
+#     if response.status_code == 200:
+#         return jsonify(response.json())
+#     else:
+#         return "error"
     
     
 @app.route('/test', methods=['GET'])
@@ -79,6 +79,7 @@ def test_route():
 
 print(test_route())
 select_data()
+# select_data2()
 if __name__ == "__main__":
     app.run()
 
