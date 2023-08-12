@@ -57,7 +57,10 @@ def select_data():
     
     print(result)
 
-    return jsonify(result)
+    response = make_response(jsonify(result))
+    response.headers['x-content-type-options'] = 'nosniff'
+    
+    return response
 
 @app.route('/return_foods_python')
 def select_data2():
