@@ -59,6 +59,17 @@ def select_data():
 
     return jsonify(result)
 
+@app.route('/return_foods_python')
+def select_data2():
+    # Here, I'm assuming another service provides the food data.
+    response = requests.get("https:/40268037selectfood.azurewebsites.net/return_foods")
+    
+    if response.status_code == 200:
+        return jsonify(response.json())
+    else:
+        return "error"
+    
+    
 @app.route('/test', methods=['GET'])
 def test_route():
     return "Test successful!"
